@@ -1,0 +1,9 @@
+[.ssproj]
+author=Fat Cerberus
+compiler=Cell
+description=A remake of the game OFF, originally by Mortis Ghost, for Sphere.
+mainScript=main.js
+name=OFF Remake
+screenHeight=240
+screenWidth=320
+
