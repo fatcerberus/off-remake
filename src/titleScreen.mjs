@@ -5,52 +5,66 @@
  */
 
 import { Prim, Thread } from 'sphere-runtime';
+import MenuStrip from 'menu-strip';
 
 export
-class SplashEngine
+class TitleEngine
 {
 	constructor(options)
 	{
 		options = Object.assign({}, {
-			fadeTime: 60,
+			fadeTime:  60,
+			menuTitle: Sphere.Game.name,
 		}, options);
 
-		Sphere.Main.log(`initializing Splasher`,
-			`fade: ${options.fadeTime}f`);
-
+		Sphere.main.log(`initializing titlescreen engine`, `fade: ${options.fadeTime}f`);
 		this.fadeTime = options.fadeTime;
+		this.menu = new MenuStrip(options.menuTitle, false, [ "new game", "continue", "exit" ]);
+		this.splashes = [];
 	}
-	
-	async showImage(textureOrFile, holdTime = 180)
+
+	addSplash(textureOrName, holdTime = 180)
 	{
-		let texture = textureOrFile;
-		if (!(textureOrFile instanceof Texture))
-			texture = new Texture(textureOrFile);
-		let image = new SplashImage(texture, this.fadeTime, holdTime);
-		image.start();
-		await Thread.join(image);
+		Sphere.main.log(`adding splash '${textureOrName}'`, `hold: ${holdTime}f`);
+
+		let texture = textureOrName;
+		if (!(textureOrName instanceof Texture))
+			texture = new Texture(`@/images/logos/${textureOrName}.png`);
+		let thread = new SplashThread(texture, this.fadeTime, holdTime);
+		this.splashes.push({ thread });
+	}
+
+	async run(showLogos = true)
+	{
+		if (showLogos) {
+			for (const splash of this.splashes) {
+				splash.thread.start();
+				await Thread.join(splash.thread);
+			}
+		}
+		await this.menu.run();
 	}
 }
 
-class SplashImage extends Thread
+class SplashThread extends Thread
 {
 	constructor(texture, fadeTime, holdTime)
 	{
 		super();
-		
+
 		this.fadeStep = 1.0 / fadeTime;
 		this.holdTime = holdTime;
 		this.texture = texture;
 		this.x = Math.trunc((Surface.Screen.width - texture.width) / 2);
 		this.y = Math.trunc((Surface.Screen.height - texture.height) / 2);
 	}
-	
+
 	on_startUp()
 	{
 		this.fadeAlpha = 0.0;
 		this.fadeMask = Color.White.fadeTo(0.0);
 	}
-	
+
 	on_render()
 	{
 		Prim.blit(Surface.Screen, this.x, this.y, this.texture, this.fadeMask);

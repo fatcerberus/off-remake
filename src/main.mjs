@@ -5,18 +5,17 @@
  */
 
 import { Console, Music, Thread } from 'sphere-runtime';
+import MenuStrip from 'menu-strip';
 
-import { SplashEngine } from './titleScreen';
+import { TitleEngine } from './titleScreen';
 
 export default
-class OFFGame extends Thread
+class OFFGame
 {
 	constructor()
 	{
-		super();
-
-		// polyfill for Sphere.Main
-		Object.defineProperty(Sphere, 'Main', {
+		// polyfill for `Sphere.main`
+		Object.defineProperty(Sphere, 'main', {
 			value: this,
 			configurable: true,
 			enumerable: false,
@@ -24,25 +23,18 @@ class OFFGame extends Thread
 		});
 
 		this.console = new Console({ prompt: ">" });
-		this.splash = new SplashEngine();
+		this.title = new TitleEngine({ menuTitle: "OFF" });
+		this.title.addSplash('copyrights');
+	}
+
+	async start()
+	{
+		Music.play('@/music/fourteenResidents.ogg');
+		await this.title.run();
 	}
 
 	log(...args)
 	{
 		this.console.log(...args);
-	}
-
-	async on_startUp()
-	{
-		Music.play('@/music/fourteenResidents.ogg');
-		await this.splash.showImage('@/images/imJustSaiyan.png');
-	}
-	
-	on_update()
-	{
-	}
-
-	on_render()
-	{
 	}
 }
