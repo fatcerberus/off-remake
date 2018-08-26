@@ -4,33 +4,36 @@
  *  titleScreen.mjs
  */
 
-import { Prim, Thread } from 'sphere-runtime';
+import { Prim, Scene, Thread } from 'sphere-runtime';
 import MenuStrip from 'menu-strip';
 
 export
-class TitleEngine
+class TitleEngine extends Thread
 {
-	constructor(options)
+	constructor(fileName = '@/data/titleScreen.json')
 	{
-		options = Object.assign({}, {
-			fadeTime:  60,
-			menuTitle: Sphere.Game.name,
-		}, options);
+		super();
+		
+		Sphere.main.log(`initializing titlescreen`, `file: ${fileName}`);
 
-		Sphere.main.log(`initializing titlescreen engine`, `fade: ${options.fadeTime}f`);
-		this.fadeTime = options.fadeTime;
-		this.menu = new MenuStrip(options.menuTitle, false, [ "new game", "continue", "exit" ]);
+		let data = require(fileName);
+		this.fadeAlpha = 0.0;
+		this.fadeTime = data.titleFadeFrames;
+		this.menu = new MenuStrip(data.menuText, false, [ "new game", "continue", "exit" ]);
+		this.texture = new Texture(data.titleScreen);
 		this.splashes = [];
+		for (const splash of data.splashScreens)
+			this.addSplash(splash.fileName, data.splashFadeFrames, splash.holdFrames);
+
+		this.start();
 	}
 
-	addSplash(textureOrName, holdTime = 180)
+	addSplash(fileName, fadeTime = 60, holdTime = 180)
 	{
-		Sphere.main.log(`adding splash '${textureOrName}'`, `hold: ${holdTime}f`);
+		Sphere.main.log(`adding splash '${fileName}'`, `hold: ${holdTime}f`);
 
-		let texture = textureOrName;
-		if (!(textureOrName instanceof Texture))
-			texture = new Texture(`@/images/logos/${textureOrName}.png`);
-		let thread = new SplashThread(texture, this.fadeTime, holdTime);
+		let texture = new Texture(fileName);
+		let thread = new SplashThread(texture, fadeTime, holdTime);
 		this.splashes.push({ thread });
 	}
 
@@ -42,7 +45,24 @@ class TitleEngine
 				await Thread.join(splash.thread);
 			}
 		}
+		await new Scene()
+			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 1.0 })
+			.run();
 		await this.menu.run();
+		await new Scene()
+			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 0.0 })
+			.run();
+	}
+	
+	on_startUp()
+	{
+		this.fadeAlpha = 0.0;
+	}
+	
+	on_render()
+	{
+		let fadeMask = Color.White.fadeTo(this.fadeAlpha);
+		Prim.blit(Surface.Screen, 0, 0, this.texture, fadeMask);
 	}
 }
 

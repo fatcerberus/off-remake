@@ -1,0 +1,9 @@
+{
+	"titleScreen": "@/images/titleScreen.png",
+	"menuText": "the switch is now ON",
+	"splashFadeFrames": 60,
+	"titleFadeFrames": 120,
+	"splashScreens": [
+		{ "fileName": "@/images/logos/copyrights.png", "holdFrames": 180 }
+	]
+}

@@ -23,8 +23,7 @@ class OFFGame
 		});
 
 		this.console = new Console({ prompt: ">" });
-		this.title = new TitleEngine({ menuTitle: "OFF" });
-		this.title.addSplash('copyrights');
+		this.title = new TitleEngine('@/data/titleScreen.json');
 	}
 
 	async start()

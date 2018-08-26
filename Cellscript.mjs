@@ -17,6 +17,7 @@ Object.assign(
 	version: 2, apiLevel: 1,
 });
 
+install('@/data',    files('data/*.json', true));
 install('@/images',  files('images/*.png', true));
 install('@/lib',     files('lib/*.mjs', true));
 install('@/music',   files('music/*.ogg', true));
