@@ -14,7 +14,7 @@ class TitleEngine extends Thread
 	{
 		super();
 		
-		Sphere.main.log(`initializing titlescreen`, `file: ${fileName}`);
+		Sphere.main.log(`initializing titlescreen`, `file: '${fileName}'`);
 
 		let data = require(fileName);
 		this.fadeAlpha = 0.0;
@@ -22,19 +22,17 @@ class TitleEngine extends Thread
 		this.menu = new MenuStrip(data.menuText, false, [ "new game", "continue", "exit" ]);
 		this.texture = new Texture(data.titleScreen);
 		this.splashes = [];
-		for (const splash of data.splashScreens)
-			this.addSplash(splash.fileName, data.splashFadeFrames, splash.holdFrames);
+		for (const splash of data.splashScreens) {
+			Sphere.main.log(`splash '${splash.fileName}'`, `hold: ${splash.holdFrames}f`);
+			let texture = new Texture(splash.fileName);
+			let thread = new SplashThread(texture, data.splashFadeFrames, splash.holdFrames);
+			this.splashes.push({ thread });
+		}
+
+		this.onSound = new Sample('@/sounds/switchOn.wav');
+		this.offSound = new Sample('@/sounds/switchOff.wav');
 
 		this.start();
-	}
-
-	addSplash(fileName, fadeTime = 60, holdTime = 180)
-	{
-		Sphere.main.log(`adding splash '${fileName}'`, `hold: ${holdTime}f`);
-
-		let texture = new Texture(fileName);
-		let thread = new SplashThread(texture, fadeTime, holdTime);
-		this.splashes.push({ thread });
 	}
 
 	async run(showLogos = true)
@@ -48,7 +46,9 @@ class TitleEngine extends Thread
 		await new Scene()
 			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 1.0 })
 			.run();
+		this.onSound.play(Mixer.Default);
 		await this.menu.run();
+		this.offSound.play(Mixer.Default);
 		await new Scene()
 			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 0.0 })
 			.run();
