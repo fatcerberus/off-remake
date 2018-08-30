@@ -13,7 +13,7 @@ class TitleEngine extends Thread
 	constructor(fileName = '@/data/titleScreen.json')
 	{
 		super();
-		
+
 		Sphere.main.log(`initializing titlescreen`, `file: '${fileName}'`);
 
 		let data = require(fileName);
@@ -53,12 +53,12 @@ class TitleEngine extends Thread
 			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 0.0 })
 			.run();
 	}
-	
+
 	on_startUp()
 	{
 		this.fadeAlpha = 0.0;
 	}
-	
+
 	on_render()
 	{
 		let fadeMask = Color.White.fadeTo(this.fadeAlpha);

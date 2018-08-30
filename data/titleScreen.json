@@ -4,6 +4,7 @@
 	"splashFadeFrames": 60,
 	"titleFadeFrames": 120,
 	"splashScreens": [
+		{ "fileName": "@/images/logos/sphere.png", "holdFrames": 180 },
 		{ "fileName": "@/images/logos/copyrights.png", "holdFrames": 180 }
 	]
 }
