@@ -23,4 +23,5 @@ install('@/lib',     files('lib/*.mjs', true));
 install('@/music',   files('music/*.ogg', true));
 install('@/scripts', files('src/*.mjs', true));
 install('@/sounds',  files('sounds/*.wav', true));
+install('@/',        files('*.rss'));
 install('@/',        files('icon.png'));
