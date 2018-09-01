@@ -8,32 +8,31 @@ import { Console, Music, Prim, Scene, Thread } from 'sphere-runtime';
 import MenuStrip from 'menu-strip';
 import SpriteImage from 'sprite-image';
 
-import { TitleEngine } from './titleScreen';
+import TitleScreen from './titleScreen';
 
 import '$/defineScenelets.mjs';
+
+global.console =
+	new Console({ hotKey: Key.Tilde });
 
 export default
 class OFFGame
 {
-	constructor()
-	{
-		// polyfill for `Sphere.main`
-		Object.defineProperty(Sphere, 'main', {
-			value: this,
-			configurable: true,
-			enumerable: false,
-			writable: false,
-		});
-
-		this.console = new Console();
-		this.title = new TitleEngine('@/data/titleScreen.json');
-	}
-
 	async start()
 	{
+		// polyfill for `Sphere.main` (API L2)
+		if (!('main' in Sphere)) {
+			Object.defineProperty(Sphere, 'main', {
+				value: this,
+				configurable: true,
+				enumerable: false,
+				writable: false,
+			});
+		}
+
 		Music.play('@/music/fourteenResidents.ogg');
-		await this.title.run();
-		let image = new SpriteImage('@/batter.rss');
+		await new TitleScreen().run();
+		let image = new SpriteImage('@/sprites/batter.rss');
 		image.pose = 'south';
 		image.x = Surface.Screen.width / 2;
 		image.y = Surface.Screen.height / 2;
@@ -41,10 +40,10 @@ class OFFGame
 		await new Scene()
 			.adjustBGM(0.0, 180)
 			.changeBGM('@/music/fourteenResidents-title.ogg')
-			.adjustBGM(1.0)
+			.adjustBGM(0.5)
 			.talk("", false, 0.5, Infinity,
-				"Welcome, Bruce. We have been anticipating your arrival for quite some time.",
-				"But we hardly have time for formalities, do we? Let's cut to the chase.")
+				"Welcome, Player. We have been anticipating your arrival for quite some time.",
+				"...oh, but we hardly have time for formalities, do we? Let's cut to the chase.")
 			.call(() => image.start())
 			.tween(image, 60, 'linear', { alpha: 1.0 })
 			.talk("", false, 0.5, Infinity,
@@ -57,16 +56,14 @@ class OFFGame
 			.talk("", false, 0.5, Infinity, "Good luck.")
 			.talk("", false, 0.5, Infinity, "Trust us. You're going to need it.")
 			.pause(120)
-			.splash('@/images/title.png', 120, 300)
+			.fork()
+				.adjustBGM(1.0, 120)
+			.end()
+			.splash('@/images/titleCard.png', 120, 300)
 			.adjustBGM(0.0, 120)
 			.run();
 		Music.play(null);
 		Music.adjustVolume(1.0, 0);
 		image.stop();
-	}
-
-	log(...args)
-	{
-		this.console.log(...args);
 	}
 }

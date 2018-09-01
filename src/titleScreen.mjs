@@ -4,53 +4,60 @@
  *  titleScreen.mjs
  */
 
-import { Prim, Scene, Thread } from 'sphere-runtime';
-import MenuStrip from 'menu-strip';
+import { Music, Prim, Scene, Thread } from 'sphere-runtime';
+import MenuStrip from './menuStrip';
 
-export
-class TitleEngine extends Thread
+export default
+class TitleScreen extends Thread
 {
 	constructor(fileName = '@/data/titleScreen.json')
 	{
 		super();
 
-		Sphere.main.log(`initializing titlescreen`, `file: '${fileName}'`);
+		console.log(`initializing titlescreen`, `file: '${fileName}'`);
 
-		let data = require(fileName);
+		this.data = require(fileName);
 		this.fadeAlpha = 0.0;
-		this.fadeTime = data.titleFadeFrames;
-		this.menu = new MenuStrip(data.menuText, false, [ "new game", "continue", "exit" ]);
-		this.texture = new Texture(data.titleScreen);
+		this.fadeTime = this.data.titleFadeFrames;
+		this.menu = new MenuStrip(this.data.menuText, false, [ "new game", "exit" ]);
+		this.texture = new Texture(this.data.titleScreen);
 		this.splashes = [];
-		for (const splash of data.splashScreens) {
-			Sphere.main.log(`splash '${splash.fileName}'`, `hold: ${splash.holdFrames}f`);
+		for (const splash of this.data.splashScreens) {
+			console.log(`splash '${splash.fileName}'`, `hold: ${splash.holdFrames}f`);
 			let texture = new Texture(splash.fileName);
-			let thread = new SplashThread(texture, data.splashFadeFrames, splash.holdFrames);
+			let thread = new SplashThread(texture, this.data.splashFadeFrames, splash.holdFrames);
 			this.splashes.push({ thread });
 		}
-
-		this.onSound = new Sample('@/sounds/switchOn.wav');
-		this.offSound = new Sample('@/sounds/switchOff.wav');
 
 		this.start();
 	}
 
 	async run(showLogos = true)
 	{
+		if (this.data.musicOverSplash)
+			Music.play(this.data.music);
 		if (showLogos) {
 			for (const splash of this.splashes) {
 				splash.thread.start();
 				await Thread.join(splash.thread);
 			}
 		}
+		if (!this.data.musicOverSplash)
+			Music.play(this.data.music);
 		await new Scene()
 			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 1.0 })
 			.run();
-		this.onSound.play(Mixer.Default);
 		await this.menu.run();
-		this.offSound.play(Mixer.Default);
 		await new Scene()
+			.doIf(() => !this.data.persistBGM)
+				.fork()
+					.adjustBGM(0.0, this.fadeTime)
+					.changeBGM(null)
+				.end()
+			.end()
 			.tween(this, this.fadeTime, 'linear', { fadeAlpha: 0.0 })
+			.resync()
+			.adjustBGM(1.0)
 			.run();
 	}
 

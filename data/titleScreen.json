@@ -1,10 +1,13 @@
 {
 	"titleScreen": "@/images/titleScreen.png",
 	"menuText": "the switch is now ON",
+	"music": "@/music/fourteenResidents.ogg",
+	"musicOverSplash": true,
+	"persistBGM": false,
 	"splashFadeFrames": 60,
 	"titleFadeFrames": 120,
 	"splashScreens": [
-		{ "fileName": "@/images/logos/sphere.png", "holdFrames": 180 },
-		{ "fileName": "@/images/logos/copyrights.png", "holdFrames": 180 }
+		{ "fileName": "@/logos/sphere.png", "holdFrames": 180 },
+		{ "fileName": "@/logos/copyrights.png", "holdFrames": 180 }
 	]
 }

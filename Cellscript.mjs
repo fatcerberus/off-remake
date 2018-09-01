@@ -9,7 +9,7 @@ Object.assign(
 {
 	name: "OFF: Puppetmaster",
 	author: "Fat Cerberus",
-	summary: "A remake/remaster of the surreal horror game OFF, originally by Mortis Ghost, for Sphere.",
+	summary: "The Batter has an important mission. Be sure it's accomplished.",
 	resolution: '320x240',
 	main: '@/scripts/main.mjs',
 
@@ -20,8 +20,9 @@ Object.assign(
 install('@/data',    files('data/*.json', true));
 install('@/images',  files('images/*.png', true));
 install('@/lib',     files('lib/*.mjs', true));
+install('@/logos',   files('logos/*.png', true));
 install('@/music',   files('music/*.ogg', true));
 install('@/scripts', files('src/*.mjs', true));
 install('@/sounds',  files('sounds/*.wav', true));
-install('@/',        files('*.rss'));
+install('@/sprites', files('sprites/*.rss'));
 install('@/',        files('icon.png'));
