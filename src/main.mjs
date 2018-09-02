@@ -7,8 +7,9 @@
 import { Console, Music, Prim, Scene, Thread } from 'sphere-runtime';
 import MenuStrip from 'menu-strip';
 
-import OpeningScene from './cutscenes/opening';
 import MapEngine from 'map-engine/map-engine';
+
+import { playOpening } from './cutscenes/opening';
 import TitleScreen from './titleScreen';
 
 import '$/defineScenelets.mjs';
@@ -22,7 +23,7 @@ class OFFGame
 	async start()
 	{
 		await new TitleScreen().run();
-		await new OpeningScene().run();
+		await playOpening();
 
 		let mapEngine = new MapEngine();
 		let hero = mapEngine.createCharacter('batter', '@/sprites/batter.ses', 50, 100, 1);
