@@ -24,14 +24,12 @@ class OpeningScene extends Thread
 	{
 		this.start();
 
-		// HACK: ensure on_startUp() gets called before we continue
-		await null;
-
 		await new Scene()
 			.changeBGM('@/music/fourteenResidents-title.ogg')
 			.adjustBGM(0.5)
 			.talk("", false, 0.5, Infinity,
-				"Welcome, Player. We have been anticipating your arrival for quite some time.",
+				"Welcome, Player.",
+				"We have been anticipating your arrival for quite some time.",
 				"...oh, but we hardly have time for formalities, do we? Let's cut to the chase.")
 			.call(() => this.sprite.start())
 			.fork()
@@ -45,7 +43,7 @@ class OpeningScene extends Thread
 			.talk("", false, 0.5, Infinity,
 				"The switch is now ON, but it won't be for long. We will let you both out in zone 0, where you should solicit the advice of the one known as \"The Judge\".")
 			.fork()
-				.tween(this.backColor, 60, 'linear', { a: 1.0 })
+				.tween(this.backColor, 60, 'linear', { a: 0.0 })
 			.end()
 			.tween(this.sprite, 60, 'linear', { alpha: 0.0 })
 			.talk("", false, 0.5, Infinity, "Good luck.")

@@ -8,6 +8,7 @@ import { Console, Music, Prim, Scene, Thread } from 'sphere-runtime';
 import MenuStrip from 'menu-strip';
 
 import OpeningScene from './cutscenes/opening';
+import MapEngine from 'map-engine/map-engine';
 import TitleScreen from './titleScreen';
 
 import '$/defineScenelets.mjs';
@@ -20,17 +21,13 @@ class OFFGame
 {
 	async start()
 	{
-		// polyfill for `Sphere.main` (API L2)
-		if (!('main' in Sphere)) {
-			Object.defineProperty(Sphere, 'main', {
-				value: this,
-				configurable: true,
-				enumerable: false,
-				writable: false,
-			});
-		}
-
-		//await new TitleScreen().run();
+		await new TitleScreen().run();
 		await new OpeningScene().run();
+
+		let mapEngine = new MapEngine();
+		let hero = mapEngine.createCharacter('batter', '@/sprites/batter.ses', 50, 100, 1);
+		mapEngine.attachInput(hero);
+		mapEngine.addInput(Key.Q, Sphere.shutDown);
+		await mapEngine.start('@/maps/somewhere.mem', hero);
 	}
 }
