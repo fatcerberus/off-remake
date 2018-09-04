@@ -4,7 +4,8 @@
 **/
 
 import { Music, Prim, Scene, Thread } from 'sphere-runtime';
-import MenuStrip from './menuStrip';
+
+import { MenuStrip } from '$/menuSystem';
 
 export default
 class TitleScreen extends Thread
@@ -13,16 +14,14 @@ class TitleScreen extends Thread
 	{
 		super();
 
-		console.log(`initializing titlescreen`, `file: '${fileName}'`);
-
 		this.data = require(fileName);
 		this.fadeAlpha = 0.0;
 		this.fadeTime = this.data.titleFadeFrames;
 		this.menu = new MenuStrip(this.data.menuText, false, [ "new game", "exit" ]);
+		this.showSplash = true;
 		this.texture = new Texture(this.data.titleScreen);
 		this.splashes = [];
 		for (const splash of this.data.splashScreens) {
-			console.log(`splash '${splash.fileName}'`, `hold: ${splash.holdFrames}f`);
 			let texture = new Texture(splash.fileName);
 			let thread = new SplashThread(texture, this.data.splashFadeFrames, splash.holdFrames);
 			this.splashes.push({ thread });
@@ -31,15 +30,17 @@ class TitleScreen extends Thread
 		this.start();
 	}
 
-	async run(showLogos = true)
+	async run(forceSplash = false)
 	{
 		if (this.data.musicOverSplash)
 			Music.play(this.data.music);
-		if (showLogos) {
+		if (this.showSplash || forceSplash) {
 			for (const splash of this.splashes) {
 				splash.thread.start();
 				await Thread.join(splash.thread);
 			}
+			if (!this.data.alwaysShowSplash)
+				this.showSplash = false;
 		}
 		if (!this.data.musicOverSplash)
 			Music.play(this.data.music);

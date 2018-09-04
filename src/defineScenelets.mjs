@@ -5,41 +5,35 @@
 
 import { Joypad, Music, Prim, Scene } from 'sphere-runtime';
 
-Scene.defineOp('adjustBGM',
-{
+Scene.defineOp('adjustBGM', {
 	start(scene, volume, numFrames = 0) {
 		Music.adjustVolume(volume, numFrames);
 	},
-
 	update(scene) {
 		return Music.adjustingVolume;
 	},
 });
 
-Scene.defineOp('changeBGM',
-{
+Scene.defineOp('changeBGM', {
 	start(scene, trackName, fadeTime) {
 		Music.play(trackName, fadeTime);
 	},
 });
 
 
-Scene.defineOp('popBGM',
-{
+Scene.defineOp('popBGM', {
 	start(scene) {
 		Music.pop();
 	},
 });
 
-Scene.defineOp('pushBGM',
-{
+Scene.defineOp('pushBGM', {
 	start(scene, trackName) {
 		Music.push(trackName);
 	},
 });
 
-Scene.defineOp('splash',
-{
+Scene.defineOp('splash', {
 	async start(scene, fileName, fadeFrames, holdFrames) {
 		this.alpha = 0.0;
 		this.texture = new Texture(fileName);
@@ -57,8 +51,7 @@ Scene.defineOp('splash',
 	},
 });
 
-Scene.defineOp('talk',
-{
+Scene.defineOp('talk', {
 	start(scene, speaker, showSpeaker, textSpeed, timeout /*...pages*/) {
 		this.speakerName = speaker;
 		this.speakerText = this.speakerName != null ? this.speakerName + ":" : null;
@@ -74,9 +67,8 @@ Scene.defineOp('talk',
 			let lineWidth = this.speakerName != null ? textAreaWidth - (speakerTextWidth + 5) : textAreaWidth;
 			let wrappedText = this.font.wordWrapString(arguments[i], lineWidth);
 			let page = this.text.push([]) - 1;
-			for (let iLine = 0; iLine < wrappedText.length; ++iLine) {
+			for (let iLine = 0; iLine < wrappedText.length; ++iLine)
 				this.text[page].push(wrappedText[iLine]);
-			}
 		}
 		this.boxVisibility = 0.0;
 		this.textVisibility = 1.0;
@@ -92,15 +84,12 @@ Scene.defineOp('talk',
 			.tween(this, 20, 'easeOutBack', { boxVisibility: 1.0 });
 		this.transition.run();
 		this.mode = "fadein";
-		while (AreKeysLeft()) {
+		while (AreKeysLeft())
 			GetKey();
-		}
-		if (Sphere.Game.disableTalking) {
+		if (Sphere.Game.disableTalking)
 			this.mode = "finish";
-		}
 		return true;
 	},
-
 	render(scene) {
 		let lineHeight = this.font.getHeight();
 		let boxHeight = lineHeight * 3 + 11;
@@ -147,11 +136,9 @@ Scene.defineOp('talk',
 		}
 		this.textSurface.blit((Surface.Screen.width - this.textSurface.width) / 2, boxY + 5);
 	},
-
 	update(scene) {
-		if (Sphere.Game.disableTalking) {
+		if (Sphere.Game.disableTalking)
 			this.mode = "finish";
-		}
 		switch (this.mode) {
 			case "idle":
 				if (this.timeout !== Infinity) {
@@ -173,9 +160,8 @@ Scene.defineOp('talk',
 				}
 				break;
 			case "fadein":
-				if (!this.transition.running) {
+				if (!this.transition.running)
 					this.mode = "write";
-				}
 				break;
 			case "write":
 				this.nameVisibility = Math.min(this.nameVisibility + 4.0 / Sphere.frameRate, 1.0);
@@ -231,16 +217,15 @@ Scene.defineOp('talk',
 			case "hidetext":
 				this.textVisibility = Math.max(this.textVisibility - (4.0 * this.textSpeed) / Sphere.frameRate, 0.0);
 				if (this.textVisibility <= 0.0) {
-				    this.transition = new Scene()
+					this.transition = new Scene()
 						.tween(this, 20, 'easeInBack', { boxVisibility: 0.0 });
 					this.transition.run();
 					this.mode = "fadeout";
 				}
 				break;
 			case "fadeout":
-				if (!this.transition.running) {
+				if (!this.transition.running)
 					this.mode = "finish";
-				}
 				break;
 			case "finish":
 				return false;

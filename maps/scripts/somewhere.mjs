@@ -7,10 +7,11 @@ import { Music } from 'sphere-runtime';
 
 export const mapScripts =
 {
-    onEnter(runTime, map)
-    {
-        Music.play('@/music/emptyWarehouse-out.ogg');
-    },
-    onUpdate() {},
-    onRender() {},
+	onEnter(runTime, map)
+	{
+		Music.play('@/music/emptyWarehouse-out.ogg');
+	},
+
+	onUpdate() {},
+	onRender() {},
 };
