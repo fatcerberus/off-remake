@@ -11,4 +11,6 @@ export const mapScripts =
     {
         Music.play('@/music/emptyWarehouse-out.ogg');
     },
+    onUpdate() {},
+    onRender() {},
 };

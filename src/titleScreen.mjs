@@ -1,8 +1,7 @@
-/*
- *  OFF: Puppetmaster by Fat Cerberus
- *  (c) 2018, based on OFF by Mortis Ghost (c) 2008
- *  titleScreen.mjs
- */
+/**
+ *  OFF: Puppetmaster  (c) 2018 Fat Cerberus
+ *  based on the game "OFF" by Mortis Ghost  (c) 2008
+**/
 
 import { Music, Prim, Scene, Thread } from 'sphere-runtime';
 import MenuStrip from './menuStrip';

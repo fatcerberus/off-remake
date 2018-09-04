@@ -1,10 +1,9 @@
-/*
- *  OFF: Puppetmaster by Fat Cerberus
- *  (c) 2018, based on OFF by Mortis Ghost (c) 2008
- *  main.mjs
- */
+/**
+ *  OFF: Puppetmaster  (c) 2018 Fat Cerberus
+ *  based on the game "OFF" by Mortis Ghost  (c) 2008
+**/
 
-import { Prim, Scene, Thread } from 'sphere-runtime';
+import { Prim, Scene } from 'sphere-runtime';
 
 import SpriteImage from 'sprite-image';
 
@@ -53,6 +52,8 @@ async function playOpening()
 		.end()
 		.splash('@/images/titleCard.png', 120, 300)
 		.adjustBGM(0.0, 120)
+		.changeBGM(null)
+		.adjustBGM(1.0)
 		.call(async () => await sprite.stop())
 		.run();
 	job.cancel();

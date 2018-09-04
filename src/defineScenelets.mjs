@@ -1,7 +1,7 @@
-/***
- * Specs Engine v6: Spectacles Saga Game Engine
-  *           Copyright (c) 2018 Power-Command
-***/
+/**
+ *  OFF: Puppetmaster  (c) 2018 Fat Cerberus
+ *  based on the game "OFF" by Mortis Ghost  (c) 2008
+**/
 
 import { Joypad, Music, Prim, Scene } from 'sphere-runtime';
 
