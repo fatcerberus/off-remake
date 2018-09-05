@@ -2,7 +2,7 @@
 	"titleScreen": "@/images/titleScreen.png",
 	"menuText": "the switch is now ON",
 	"music": "@/music/fourteenResidents.ogg",
-	"alwaysShowSplash": true,
+	"alwaysShowSplash": false,
 	"musicOverSplash": true,
 	"persistBGM": false,
 	"splashFadeFrames": 60,

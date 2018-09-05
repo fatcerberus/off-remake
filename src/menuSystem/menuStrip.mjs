@@ -17,6 +17,7 @@ class MenuStrip extends Thread
 		this.canCancel = canCancel;
 		this.menuItems = [];
 		this.selectedItem = 0;
+		this.tagChosen = undefined;
 		this.title = title;
 		if (items !== null) {
 			for (const item of items)
@@ -24,6 +25,11 @@ class MenuStrip extends Thread
 		}
 	}
 
+	get chosenItem()
+	{
+		return this.tagChosen;
+	}
+	
 	addItem(text, tag = text)
 	{
 		this.menuItems.push({ text, tag });
@@ -31,6 +37,13 @@ class MenuStrip extends Thread
 	}
 
 	async run()
+	{
+		this.start();
+		await Thread.join(this);
+		return this.chosenItem;
+	}
+
+	on_startUp()
 	{
 		this.openness = 0.0;
 		this.scrollDirection = 0;
@@ -45,15 +58,10 @@ class MenuStrip extends Thread
 		this.carouselSurface = CreateSurface(carouselWidth, this.font.getHeight() + 10, CreateColor(0, 0, 0, 0));
 		while (AreKeysLeft())
 			GetKey();
-		this.start();
 		this.takeFocus();
 		this.animation = new Scene()
 			.tween(this, 15, 'easeOutQuad', { openness: 1.0 });
 		this.animation.run();
-		await Thread.join(this);
-		return this.chosenItem !== null
-			? this.menuItems[this.chosenItem].tag
-			: null;
 	}
 
 	on_inputCheck()
@@ -63,7 +71,7 @@ class MenuStrip extends Thread
 
 		let key = AreKeysLeft() ? GetKey() : null;
 		if (key == GetPlayerKey(PLAYER_1, PLAYER_KEY_A)) {
-			this.chosenItem = this.selectedItem;
+			this.tagChosen = this.selectedItem;
 			this.animation = new Scene()
 				.fork()
 					.tween(this, 7, 'easeInOutSine', { brightness: 1.0 })

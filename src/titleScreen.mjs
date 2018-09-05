@@ -3,7 +3,7 @@
  *  based on the game "OFF" by Mortis Ghost  (c) 2008
 **/
 
-import { Music, Prim, Scene, Thread } from 'sphere-runtime';
+import { Music, Prim, Scene } from 'sphere-runtime';
 
 import { MenuStrip } from '$/menuSystem';
 
