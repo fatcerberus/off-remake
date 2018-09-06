@@ -4,3 +4,4 @@
 **/
 
 export { default as MenuStrip } from './menuStrip';
+export { default as TitleScreen } from './titleScreen';

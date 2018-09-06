@@ -7,7 +7,7 @@ import { Console, Prim, Scene } from 'sphere-runtime';
 
 import MapEngine from '$/mapEngine';
 import SpriteImage from '$/spriteImage';
-import TitleScreen from '$/titleScreen';
+import { TitleScreen } from '$/menuSystem';
 
 import '$/defineScenelets.mjs';
 

@@ -5,7 +5,7 @@
 
 import { Music, Prim, Scene } from 'sphere-runtime';
 
-import { MenuStrip } from '$/menuSystem';
+import MenuStrip from './menuStrip';
 
 export default
 class TitleScreen
@@ -52,6 +52,5 @@ class TitleScreen
 			.adjustBGM(1.0)
 			.run();
 		job.cancel();
-		
 	}
 }
