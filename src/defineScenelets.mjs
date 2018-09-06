@@ -35,17 +35,17 @@ Scene.defineOp('pushBGM', {
 
 Scene.defineOp('splash', {
 	async start(scene, fileName, fadeFrames, holdFrames) {
-		this.alpha = 0.0;
 		this.texture = new Texture(fileName);
 		this.x = (Surface.Screen.width - this.texture.width) / 2;
 		this.y = (Surface.Screen.height - this.texture.height) / 2;
+		this.mask = Color.White.fadeTo(0.0);
 		let renderJob = Dispatch.onRender(() => {
-			Prim.blit(Surface.Screen, this.x, this.y, this.texture, Color.White.fadeTo(this.alpha));
+			Prim.blit(Surface.Screen, this.x, this.y, this.texture, this.mask);
 		});
 		await new Scene()
-			.tween(this, fadeFrames, 'linear', { alpha: 1.0 })
+			.tween(this.mask, fadeFrames, 'linear', { a: 1.0 })
 			.pause(holdFrames)
-			.tween(this, fadeFrames, 'linear', { alpha: 0.0 })
+			.tween(this.mask, fadeFrames, 'linear', { a: 0.0 })
 			.run();
 		renderJob.cancel();
 	},
