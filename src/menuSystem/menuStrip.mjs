@@ -29,7 +29,7 @@ class MenuStrip extends Thread
 	{
 		return this.tagChosen;
 	}
-	
+
 	addItem(text, tag = text)
 	{
 		this.menuItems.push({ text, tag });
@@ -66,11 +66,11 @@ class MenuStrip extends Thread
 
 	on_inputCheck()
 	{
-		if (this.mode != 'idle')
+		if (this.mode !== 'idle')
 			return;
 
 		let key = AreKeysLeft() ? GetKey() : null;
-		if (key == GetPlayerKey(PLAYER_1, PLAYER_KEY_A)) {
+		if (key === GetPlayerKey(PLAYER_1, PLAYER_KEY_A)) {
 			this.tagChosen = this.selectedItem;
 			this.animation = new Scene()
 				.fork()
@@ -81,21 +81,21 @@ class MenuStrip extends Thread
 			this.animation.run();
 			this.mode = 'close';
 		}
-		else if (key == GetPlayerKey(PLAYER_1, PLAYER_KEY_B) && this.canCancel) {
+		else if (key === GetPlayerKey(PLAYER_1, PLAYER_KEY_B) && this.canCancel) {
 			this.chosenItem = null;
 			this.animation = new Scene()
 				.tween(this, 15, 'easeInQuad', { openness: 0.0 });
 			this.animation.run();
 			this.mode = 'close';
 		}
-		else if (key == GetPlayerKey(PLAYER_1, PLAYER_KEY_LEFT)) {
+		else if (key === GetPlayerKey(PLAYER_1, PLAYER_KEY_LEFT)) {
 			this.scrollDirection = -1;
 			this.animation = new Scene()
 				.tween(this, 15, 'linear', { scrollProgress: 1.0 });
 			this.animation.run();
 			this.mode = 'changeItem';
 		}
-		else if (key == GetPlayerKey(PLAYER_1, PLAYER_KEY_RIGHT)) {
+		else if (key === GetPlayerKey(PLAYER_1, PLAYER_KEY_RIGHT)) {
 			this.scrollDirection = 1;
 			this.animation = new Scene()
 				.tween(this, 15, 'linear', { scrollProgress: 1.0 });
@@ -143,13 +143,13 @@ class MenuStrip extends Thread
 		this.carouselSurface.blit(carouselX, menuY);
 		this.font.setColorMask(CreateColor(128, 128, 128, this.openness * 255));
 		this.font.drawText(carouselX - this.font.getStringWidth("<") - 5, menuY + 5, "<");
-		if (this.scrollDirection == -1) {
+		if (this.scrollDirection < 0) {
 			this.font.setColorMask(CreateColor(255, 192, 0, this.openness * (1.0 - this.scrollProgress) * 255));
 			this.font.drawText(carouselX - this.font.getStringWidth("<") - 5, menuY + 5, "<");
 		}
 		this.font.setColorMask(CreateColor(128, 128, 128, this.openness * 255));
 		this.font.drawText(carouselX + this.carouselSurface.width + 5, menuY + 5, ">");
-		if (this.scrollDirection == 1) {
+		if (this.scrollDirection > 0) {
 			this.font.setColorMask(CreateColor(255, 192, 0, this.openness * (1.0 - this.scrollProgress) * 255));
 			this.font.drawText(carouselX + this.carouselSurface.width + 5, menuY + 5, ">");
 		}

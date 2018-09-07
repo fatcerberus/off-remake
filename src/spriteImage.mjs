@@ -12,7 +12,7 @@ class SpriteImage extends Thread
 	constructor(fileName)
 	{
 		super();
-		
+
 		// while we're loading the spriteset using the Sphere v1 API, we want to
 		// use Sphere v2 filename resolution rules.  we can call FS.fullPath() in advance
 		// to accomplish that.
@@ -37,7 +37,7 @@ class SpriteImage extends Thread
 	set pose(name)
 	{
 		let newPoseID = from(this.set.directions)
-			.where(it => it.name == name)
+			.where(it => it.name === name)
 			.select((it, idx) => idx)
 			.first();
 		if (newPoseID === undefined)
@@ -49,14 +49,14 @@ class SpriteImage extends Thread
 
 	on_render()
 	{
-		let imageIndex = this.set.directions[this.poseID].frames[this.frameID].index
+		let imageIndex = this.set.directions[this.poseID].frames[this.frameID].index;
 		let image = this.set.images[imageIndex];
 		image.blitMask(this.x + this.xOffset, this.y + this.yOffset, CreateColor(255, 255, 255, this.alpha * 255));
 	}
 
 	on_update()
 	{
-		if (--this.countdown == 0) {
+		if (--this.countdown <= 0) {
 			let pose = this.set.directions[this.poseID];
 			this.frameID = (this.frameID + 1) % pose.frames.length;
 			this.countdown = pose.frames[this.frameID].delay;

@@ -52,9 +52,9 @@ Scene.defineOp('splash', {
 });
 
 Scene.defineOp('talk', {
-	start(scene, speaker, showSpeaker, textSpeed, timeout /*...pages*/) {
+	start(scene, speaker = null, showSpeaker, textSpeed, timeout, ...pages) {
 		this.speakerName = speaker;
-		this.speakerText = this.speakerName != null ? this.speakerName + ":" : null;
+		this.speakerText = this.speakerName !== null ? this.speakerName + ":" : null;
 		this.showSpeaker = showSpeaker;
 		this.textSpeed = textSpeed;
 		this.timeout = timeout;
@@ -63,9 +63,9 @@ Scene.defineOp('talk', {
 		this.text = [];
 		let speakerTextWidth = this.font.getStringWidth(this.speakerText);
 		let textAreaWidth = Surface.Screen.width - 16;
-		for (let i = 5; i < arguments.length; ++i) {
-			let lineWidth = this.speakerName != null ? textAreaWidth - (speakerTextWidth + 5) : textAreaWidth;
-			let wrappedText = this.font.wordWrapString(arguments[i], lineWidth);
+		for (const pageText of pages) {
+			let lineWidth = this.speakerName !== null ? textAreaWidth - (speakerTextWidth + 5) : textAreaWidth;
+			let wrappedText = this.font.wordWrapString(pageText, lineWidth);
 			let page = this.text.push([]) - 1;
 			for (let iLine = 0; iLine < wrappedText.length; ++iLine)
 				this.text[page].push(wrappedText[iLine]);
@@ -103,7 +103,7 @@ Scene.defineOp('talk', {
 		let lineCount = this.text[this.currentPage].length;
 		let textAreaWidth = this.textSurface.width;
 		let textX = 0;
-		if (this.speakerName != null) {
+		if (this.speakerName !== null) {
 			let speakerTextWidth = this.font.getStringWidth(this.speakerText);
 			textX = speakerTextWidth + 5;
 		}
@@ -111,14 +111,14 @@ Scene.defineOp('talk', {
 		for (let iLine = Math.min(this.lineToReveal - this.topLine + 1, lineCount - this.topLine, 3) - 1; iLine >= 0; --iLine) {
 			let trueLine = this.topLine + iLine;
 			let textY = iLine * lineHeight - this.scrollOffset * lineHeight;
-			let lineVisibility = iLine == 0 ? 1.0 - this.scrollOffset : 1.0;
-			if (this.lineVisibility > 0.0 || this.lineToReveal != trueLine) {
+			let lineVisibility = iLine === 0 ? 1.0 - this.scrollOffset : 1.0;
+			if (this.lineVisibility > 0.0 || this.lineToReveal !== trueLine) {
 				let lineText = this.text[this.currentPage][trueLine];
 				this.font.setColorMask(CreateColor(0, 0, 0, 255 * this.textVisibility * lineVisibility));
 				this.textSurface.drawText(this.font, textX + 1, textY + 1, lineText);
 				this.font.setColorMask(CreateColor(255, 255, 255, 255 * this.textVisibility * lineVisibility));
 				this.textSurface.drawText(this.font, textX, textY, lineText);
-				if (this.lineToReveal == trueLine) {
+				if (this.lineToReveal === trueLine) {
 					let shownArea = textAreaWidth * this.lineVisibility;
 					this.textSurface.setBlendMode(SUBTRACT);
 					this.textSurface.gradientRectangle((textX - lineHeight * 2) + shownArea, textY, lineHeight * 2, lineHeight + 1, CreateColor(0, 0, 0, 0), CreateColor(0, 0, 0, 255), CreateColor(0, 0, 0, 255 * this.boxVisibility), CreateColor(0, 0, 0, 0));
@@ -127,7 +127,7 @@ Scene.defineOp('talk', {
 					this.textSurface.setBlendMode(BLEND);
 				}
 			}
-			if (this.showSpeaker && this.speakerName != null && trueLine == 0) {
+			if (this.showSpeaker && this.speakerName !== null && trueLine === 0) {
 				this.font.setColorMask(CreateColor(0, 0, 0, this.textVisibility * this.nameVisibility * 255));
 				this.textSurface.drawText(this.font, 1, textY + 1, this.speakerText);
 				this.font.setColorMask(CreateColor(255, 192, 0, this.textVisibility * this.nameVisibility * 255));
@@ -171,12 +171,13 @@ Scene.defineOp('talk', {
 					let currentLineText = this.text[this.currentPage][this.lineToReveal];
 					let currentLineWidth = this.font.getStringWidth(currentLineText);
 					let textAreaWidth = this.textSurface.width;
-					if (this.speakerName != null) {
+					if (this.speakerName !== null) {
 						let speakerTextWidth = this.font.getStringWidth(this.speakerText);
 						textAreaWidth -= speakerTextWidth + 5;
 					}
 					if (this.lineVisibility >= 1.0 || textAreaWidth * this.lineVisibility >= currentLineWidth + 20) {
-						if (this.lineToReveal - this.topLine == lineCount - 1) this.mode = "idle";
+						if (this.lineToReveal - this.topLine === lineCount - 1)
+							this.mode = "idle";
 						++this.lineToReveal;
 						++this.numLinesToDraw;
 						if (this.numLinesToDraw < 3 && this.lineToReveal < this.text[this.currentPage].length)
@@ -232,12 +233,11 @@ Scene.defineOp('talk', {
 		}
 		return true;
 	},
-
 	getInput(scene) {
-		if (this.mode != "idle")
+		if (this.mode !== "idle")
 			return;
 		if ((Keyboard.Default.isPressed(Key.Z) || Joypad.P1.isPressed(0))
-			&& this.timeout == Infinity)
+			&& this.timeout === Infinity)
 		{
 			if (this.topLine + 3 >= this.text[this.currentPage].length) {
 				if (this.currentPage < this.text.length - 1)

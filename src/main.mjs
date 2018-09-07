@@ -3,7 +3,7 @@
  *  based on the game "OFF" by Mortis Ghost  (c) 2008
 **/
 
-import { Console, Prim, Scene } from 'sphere-runtime';
+import { Prim, Scene } from 'sphere-runtime';
 
 import AutoColorMask from '$/autoColorMask';
 import MapEngine from '$/mapEngine';
@@ -19,10 +19,11 @@ class OFFGame
 	{
 		this.mapEngine = new MapEngine();
 	}
-	
+
 	async start()
 	{
-		await new TitleScreen().run();
+		let title = new TitleScreen();
+		//await title.run();
 		await playOpening();
 
 		this.screenMask = new AutoColorMask(Color.Black);
