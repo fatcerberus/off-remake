@@ -5,6 +5,7 @@
 
 import { Console, Prim, Scene } from 'sphere-runtime';
 
+import AutoColorMask from '$/autoColorMask';
 import MapEngine from '$/mapEngine';
 import SpriteImage from '$/spriteImage';
 import { TitleScreen } from '$/menuSystem';
@@ -12,16 +13,24 @@ import { TitleScreen } from '$/menuSystem';
 import '$/defineScenelets.mjs';
 
 export default
-async function main()
+class OFFGame
 {
-	await new TitleScreen().run();
-	await playOpening();
+	constructor()
+	{
+		this.mapEngine = new MapEngine();
+	}
+	
+	async start()
+	{
+		await new TitleScreen().run();
+		await playOpening();
 
-	let mapEngine = new MapEngine();
-	let hero = mapEngine.createCharacter('batter', '@/sprites/batter.ses', 50, 100, 1);
-	mapEngine.attachInput(hero);
-	mapEngine.addInput(Key.Q, Sphere.shutDown);
-	await mapEngine.start('@/maps/somewhere.mem', hero);
+		this.screenMask = new AutoColorMask(Color.Black);
+		this.theBatter = this.mapEngine.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 1);
+		this.theBatter._sprite.dirs[2].dt = 12;
+		this.mapEngine.attachInput(this.theBatter);
+		await this.mapEngine.start('@/maps/somewhere.mem', this.theBatter);
+	}
 }
 
 async function playOpening()
