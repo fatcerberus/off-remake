@@ -5,8 +5,9 @@
 
 import { Prim, Scene } from 'sphere-runtime';
 
+import MapEngine from 'map-engine';
+
 import AutoColorMask from '$/autoColorMask';
-import MapEngine from '$/mapEngine';
 import SpriteImage from '$/spriteImage';
 import { TitleScreen } from '$/menuSystem';
 
@@ -17,20 +18,20 @@ class OFFGame
 {
 	constructor()
 	{
-		this.mapEngine = new MapEngine();
+		this.engine = new MapEngine(this);
+		this.overlay = new AutoColorMask(Color.Black);
+		this.titles = new TitleScreen();
 	}
 
 	async start()
 	{
-		let title = new TitleScreen();
-		//await title.run();
-		await playOpening();
+		//await this.titles.run();
+		//await playOpening();
 
-		this.screenMask = new AutoColorMask(Color.Black);
-		this.theBatter = this.mapEngine.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 1);
+		this.theBatter = this.engine.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 0);
 		this.theBatter._sprite.dirs[2].dt = 12;
-		this.mapEngine.attachInput(this.theBatter);
-		await this.mapEngine.start('@/maps/somewhere.mem', this.theBatter);
+		this.engine.attachInput(this.theBatter);
+		await this.engine.start('@/maps/somewhere.mem', this.theBatter);
 	}
 }
 

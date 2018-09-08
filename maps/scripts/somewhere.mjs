@@ -3,33 +3,37 @@
  *  based on OFF by Mortis Ghost  (c) 2008
  */
 
-import { Music, Scene } from 'sphere-runtime';
+import { Music, Random, Scene } from 'sphere-runtime';
 
 export const mapScripts =
 {
 	async onEnter(runTime, map)
 	{
-		Sphere.main.theBatter.frozen = true;
-		await Sphere.main.screenMask.fadeTo(Color.Transparent, 0);
-		/*await new Scene()
+		addTeleport(runTime.engine, 'maps/zone0-outside.mem', 9, 0, 160, 960);
+		runTime.theBatter.frozen = true;
+		await runTime.overlay.fadeTo(Color.Transparent, 120);
+		await new Scene()
 			.talk("Batter", true, 1.0, Infinity,
 				"To move my body, use the arrow keys on your keyboard.  To interact with the environment, use the Z key.")
-			.run();*/
-		Sphere.main.theBatter.frozen = false;
+			.run();
+		runTime.theBatter.frozen = false;
 	},
 	
 	async onExit(runTime, map)
 	{
-		await Sphere.main.screenMask.fadeTo(Color.Black, 120);
+		await Sphere.main.overlay.fadeTo(Color.Black, 120);
 	},
-
-	async onLeaveNorth(runTime, map)
-	{
-		await Sphere.main.mapEngine.changeMap('maps/zone0-outside.mem');
-		Sphere.main.theBatter.x = 160;
-		Sphere.main.theBatter.y = 960;
-	},
-	
-	onUpdate() {},
-	onRender() {},
 };
+
+function addTeleport(engine, mapFileName, x, y, toX, toY)
+{
+	let mEngine = engine.MEngine;
+	let fired = false;
+	mEngine.addTrigger(Random.string(10), x, y, 0, async () => {
+		Sphere.main.theBatter.frozen = true;
+		await engine.changeMap(mapFileName);
+		Sphere.main.theBatter.x = toX;
+		Sphere.main.theBatter.y = toY;
+		Sphere.main.theBatter.frozen = false;
+	});
+}
