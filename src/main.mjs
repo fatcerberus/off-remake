@@ -11,7 +11,7 @@ import AutoColorMask from '$/autoColorMask';
 import SpriteImage from '$/spriteImage';
 import { TitleScreen } from '$/menuSystem';
 
-import '$/defineScenelets.mjs';
+import '$/defineScenelets';
 
 export default
 class OFFGame

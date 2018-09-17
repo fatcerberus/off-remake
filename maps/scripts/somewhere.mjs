@@ -12,10 +12,10 @@ export const mapScripts =
 		addTeleport(runTime.engine, 'maps/zone0-outside.mem', 9, 0, 160, 960);
 		runTime.theBatter.frozen = true;
 		await runTime.overlay.fadeTo(Color.Transparent, 120);
-		await new Scene()
+		/*await new Scene()
 			.talk("Batter", true, 1.0, Infinity,
 				"To move my body, use the arrow keys on your keyboard.  To interact with the environment, use the Z key.")
-			.run();
+			.run();*/
 		runTime.theBatter.frozen = false;
 	},
 	
