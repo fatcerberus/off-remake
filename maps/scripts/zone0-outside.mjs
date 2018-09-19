@@ -10,11 +10,5 @@ export const mapScripts =
 	async onEnter(runTime, map)
 	{
 		Music.play('@/music/emptyWarehouse-out.ogg');
-		await runTime.fader.fadeTo(Color.Transparent, 120);
-	},
-	
-	async onExit(runTime, map)
-	{
-		await runTime.fader.fadeTo(Color.Black, 120);
 	},
 };

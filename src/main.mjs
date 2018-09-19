@@ -18,7 +18,6 @@ class OFFSession
 {
 	constructor()
 	{
-		this.fader = new AutoColorMask(Color.Black);
 		this.maps = new MapEngineEx(this);
 		this.titles = new TitleScreen();
 	}
@@ -92,23 +91,32 @@ class MapEngineEx extends MapEngine
 	constructor(...args)
 	{
 		super(...args);
-		
-		this.teleports = [];
-		this.MEngine.onEnter = () => {
-			for (const entry of this.teleports) {
-				let actor = entry.actor;
-				actor.x = entry.toX;
-				actor.y = entry.toY;
-				this.blockInput = false;
-			}
-		}
+
+		this.fader = new AutoColorMask(Color.Black);
+		this.teleportData = null;
+
+		Object.assign(this.MEngine, {
+			onEnter: async () => {
+				if (this.teleportData !== null) {
+					let actor = this.teleportData.actor;
+					actor.x = this.teleportData.toX;
+					actor.y = this.teleportData.toY;
+					this.blockInput = false;
+					this.teleportData = null;
+				}
+				await this.fader.fadeTo(Color.Transparent, 60);
+			},
+			onExit: async () => {
+				await this.fader.fadeTo(Color.Black, 60);
+			},
+		});
 	}
-	
+
 	addTeleport(mapFileName, x, y, toX, toY)
 	{
 		this.MEngine.addTrigger(Random.string(), x, y, 0,
 			async (runTime, actor) => {
-				this.teleports.push({ actor, toX, toY });
+				this.teleportData = { actor, toX, toY };
 				this.blockInput = true;
 				await this.changeMap(mapFileName);
 			});
