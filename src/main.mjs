@@ -3,7 +3,7 @@
  *  based on the game "OFF" by Mortis Ghost  (c) 2008
 **/
 
-import { Prim, Scene } from 'sphere-runtime';
+import { Prim, Random, Scene } from 'sphere-runtime';
 
 import MapEngine from 'map-engine';
 
@@ -14,12 +14,12 @@ import { TitleScreen } from '$/menuSystem';
 import '$/defineScenelets';
 
 export default
-class OFFGame
+class OFFSession
 {
 	constructor()
 	{
 		this.fader = new AutoColorMask(Color.Black);
-		this.mapEngine = new MapEngine(this);
+		this.maps = new MapEngineEx(this);
 		this.titles = new TitleScreen();
 	}
 
@@ -28,11 +28,11 @@ class OFFGame
 		//await this.titles.run();
 		//await playOpening();
 
-		this.theBatter = this.mapEngine.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 0);
+		this.theBatter = this.maps.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 0);
 		for (let i = 0; i < 4; ++i)
 			this.theBatter._sprite.dirs[i].dt = 8;
-		this.mapEngine.attachInput(this.theBatter);
-		await this.mapEngine.start('@/maps/somewhere.mem', this.theBatter);
+		this.maps.attachInput(this.theBatter);
+		await this.maps.start('@/maps/somewhere.mem', this.theBatter);
 	}
 }
 
@@ -85,4 +85,32 @@ async function playOpening()
 		.call(async () => await sprite.stop())
 		.run();
 	job.cancel();
+}
+
+class MapEngineEx extends MapEngine
+{
+	constructor(...args)
+	{
+		super(...args);
+		
+		this.teleports = [];
+		this.MEngine.onEnter = () => {
+			for (const entry of this.teleports) {
+				let actor = entry.actor;
+				actor.x = entry.toX;
+				actor.y = entry.toY;
+				this.blockInput = false;
+			}
+		}
+	}
+	
+	addTeleport(mapFileName, x, y, toX, toY)
+	{
+		this.MEngine.addTrigger(Random.string(), x, y, 0,
+			async (runTime, actor) => {
+				this.teleports.push({ actor, toX, toY });
+				this.blockInput = true;
+				await this.changeMap(mapFileName);
+			});
+	}
 }

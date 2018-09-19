@@ -9,7 +9,7 @@ export const mapScripts =
 {
 	async onEnter(runTime, map)
 	{
-		addTeleport(runTime.engine, 'maps/zone0-outside.mem', 9, 0, 160, 960);
+		runTime.maps.addTeleport('maps/zone0-outside.mem', 9, 0, 160, 960);
 		runTime.theBatter.frozen = true;
 		await runTime.fader.fadeTo(Color.Transparent, 120);
 		/*await new Scene()
@@ -24,16 +24,3 @@ export const mapScripts =
 		await runTime.fader.fadeTo(Color.Black, 120);
 	},
 };
-
-function addTeleport(engine, mapFileName, x, y, toX, toY)
-{
-	let mEngine = engine.MEngine;
-	mEngine.addTrigger(Random.string(10), x, y, 0,
-		async (runTime, actor) => {
-			runTime.theBatter.frozen = true;
-			await engine.changeMap(mapFileName);
-			runTime.theBatter.x = toX;
-			runTime.theBatter.y = toY;
-			runTime.theBatter.frozen = false;
-		});
-}
