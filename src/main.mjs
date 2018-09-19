@@ -18,8 +18,8 @@ class OFFGame
 {
 	constructor()
 	{
-		this.engine = new MapEngine(this);
-		this.overlay = new AutoColorMask(Color.Black);
+		this.fader = new AutoColorMask(Color.Black);
+		this.mapEngine = new MapEngine(this);
 		this.titles = new TitleScreen();
 	}
 
@@ -28,10 +28,11 @@ class OFFGame
 		//await this.titles.run();
 		//await playOpening();
 
-		this.theBatter = this.engine.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 0);
-		this.theBatter._sprite.dirs[2].dt = 12;
-		this.engine.attachInput(this.theBatter);
-		await this.engine.start('@/maps/somewhere.mem', this.theBatter);
+		this.theBatter = this.mapEngine.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 0);
+		for (let i = 0; i < 4; ++i)
+			this.theBatter._sprite.dirs[i].dt = 8;
+		this.mapEngine.attachInput(this.theBatter);
+		await this.mapEngine.start('@/maps/somewhere.mem', this.theBatter);
 	}
 }
 
