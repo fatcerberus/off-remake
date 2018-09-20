@@ -115,20 +115,23 @@ class MapEngineEx extends MapEngine
 					this.needFadeIn = false;
 					await this.fader.fadeTo(Color.Transparent, 60);
 				}
-				this.blockInput = false;
 			},
 		});
 	}
 
 	addTeleport(mapFileName, x, y, toX, toY)
 	{
+		let firing = false;
 		this.MEngine.addTrigger(Random.string(), x, y, 0,
 			async (runTime, actor) => {
+				if (firing)
+					return;
+				firing = true;
 				this.teleportData = { actor, toX, toY };
 				this.needFadeIn = true;
-				this.blockInput = true;
 				await this.fader.fadeTo(Color.Black, 60);
 				this.changeMap(mapFileName);
+				firing = false;
 			});
 	}
 }

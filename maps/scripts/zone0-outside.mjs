@@ -21,6 +21,7 @@ export const mapScripts =
 			let pronoun3 = runTime.flags.playerSex == 'male' ? 'His' : 'Her';
 			let purring = new Sample('sounds/catPurr.wav');
 			await new Scene()
+				.move(pablo, 'east', 8)
 				.move(pablo, 'south', 6 * 16)
 				.pause(90)
 				.call(() => purring.play(Mixer.Default))
@@ -29,7 +30,7 @@ export const mapScripts =
 				.talk("Batter", true, 1.0, Infinity, `I'm the Batter.\nI've been entrusted with a sacred mission.`)
 				.call(() => purring.play(Mixer.Default))
 				.talk("Judge", true, 1.0, Infinity, `It is a pleasure, although it was not the body I was addressing, but the soul that it harbors. What is your name, controller?`)
-				.talk("Batter", true, 1.0, Infinity, `${pronoun3} name is ${playerName}. ${pronoun2} can't talk to us; however, ${pronoun1} can see and hear everything.`)
+				.talk("Batter", true, 1.0, Infinity, `${pronoun3} name is ${playerName}. ${pronoun2} can't talk to us. However, ${pronoun1} can see and hear everything.`)
 				.call(() => purring.play(Mixer.Default))
 				.talk("Judge", true, 1.0, Infinity, `Even though you, too, are but an imaginary spectre in my eyes, let it be said that I am delighted to meet you as well, dear ${playerName}.`)
 				.talk("Batter", true, 1.0, Infinity, `I believe we need your help.`)
@@ -42,7 +43,9 @@ export const mapScripts =
 				.call(() => purring.play(Mixer.Default))
 				.talk("Judge", true, 1.0, Infinity, `There is no objective more laudable than yours. I accept to serve you as a guide through this area, if it is of any help to you.`)
 				.talk("Batter", true, 1.0, Infinity, `Thanks.`)
-				.move(pablo, 'north', 6 * 16)
+				.move(pablo, 'north', 6 * 16 - 1)
+				.move(pablo, 'west', 8)
+				.move(pablo, 'north', 1)
 				.run();
 			runTime.maps.blockInput = false;
 		}

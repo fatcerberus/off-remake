@@ -104,8 +104,8 @@ Scene.defineOp('talk', {
 		let boxHeight = lineHeight * 3 + 11;
 		let finalBoxY = Surface.Screen.height * 0.85 - boxHeight / 2;
 		let boxY = finalBoxY + (Surface.Screen.height - finalBoxY) * (1.0 - this.boxVisibility);
-		OutlinedRectangle(-1, boxY - 1, Surface.Screen.width + 2, boxHeight + 2, CreateColor(0, 0, 0, 224 * this.boxVisibility));
-		Rectangle(0, boxY, Surface.Screen.width, boxHeight, CreateColor(0, 0, 0, 192 * this.boxVisibility));
+		OutlinedRectangle(-1, boxY - 1, Surface.Screen.width + 2, boxHeight + 2, CreateColor(0, 0, 0, 240 * this.boxVisibility));
+		Rectangle(0, boxY, Surface.Screen.width, boxHeight, CreateColor(0, 0, 0, 224 * this.boxVisibility));
 		this.textSurface.setBlendMode(REPLACE);
 		this.textSurface.rectangle(0, 0, this.textSurface.width, this.textSurface.height, CreateColor(0, 0, 0, 0));
 		this.textSurface.setBlendMode(BLEND);
