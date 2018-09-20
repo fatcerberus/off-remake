@@ -29,7 +29,6 @@ install('@/data',    files('data/*.json', true));
 install('@/images',  files('images/*.png', true));
 install('@/lib',     files('lib/*.mjs', true));
 install('@/logos',   files('logos/*.png', true));
-install('@/maps',    files('maps/*.mjs', true));
 install('@/music',   files('music/*.ogg', true));
 install('@/scripts', files('src/*.mjs', true));
 install('@/shaders', files('shaders/*.glsl', true));

@@ -37,7 +37,7 @@ class OFFSession
 		for (let i = 0; i < 4; ++i)
 			this.theBatter._sprite.dirs[i].dt = 8;
 		this.maps.attachInput(this.theBatter);
-		await this.maps.start('@/maps/somewhere.mem', this.theBatter);
+		await this.maps.start('@/maps/zone0-lobby.mem', this.theBatter);
 	}
 }
 
@@ -100,6 +100,7 @@ class MapEngineEx extends MapEngine
 
 		this.blockInput = true;
 		this.fader = new AutoColorMask(Color.Black);
+		this.mapScriptsPath = '@/scripts/mapScripts';
 		this.teleportData = null;
 		this.needFadeIn = true;
 

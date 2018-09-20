@@ -51,3 +51,13 @@ export const mapScripts =
 		}
 	},
 };
+
+export const entityScripts =
+{
+	pablo: {
+		async onTalk(runTime, self, actor)
+		{
+			self.faceEntity(actor);
+		},
+	},
+};
