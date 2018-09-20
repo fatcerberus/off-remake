@@ -20,6 +20,15 @@ Scene.defineOp('changeBGM', {
 	},
 });
 
+Scene.defineOp('move', {
+	start(scene, actor, direction, numPixels) {
+		actor.queueMove(direction, numPixels);
+		this.actor = actor;
+	},
+	update(scene) {
+		return !this.actor.waiting;
+	},
+});
 
 Scene.defineOp('popBGM', {
 	start(scene) {

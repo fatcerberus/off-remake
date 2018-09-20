@@ -18,6 +18,12 @@ class OFFSession
 {
 	constructor()
 	{
+		this.flags = {
+			playerName: "Pigfood McCoy",
+			playerSex: 'male',
+			metTheJudge: false,
+		};
+
 		this.maps = new MapEngineEx(this);
 		this.titles = new TitleScreen();
 	}
@@ -27,7 +33,7 @@ class OFFSession
 		//await this.titles.run();
 		//await playOpening();
 
-		this.theBatter = this.maps.createCharacter('batter', '@/sprites/batter.ses', 152, 168, 0);
+		this.theBatter = this.maps.createCharacter('theBatter', '@/sprites/theBatter.ses', 152, 168, 0);
 		for (let i = 0; i < 4; ++i)
 			this.theBatter._sprite.dirs[i].dt = 8;
 		this.maps.attachInput(this.theBatter);
@@ -92,8 +98,10 @@ class MapEngineEx extends MapEngine
 	{
 		super(...args);
 
+		this.blockInput = true;
 		this.fader = new AutoColorMask(Color.Black);
 		this.teleportData = null;
+		this.needFadeIn = true;
 
 		Object.assign(this.MEngine, {
 			onEnter: async () => {
@@ -101,13 +109,13 @@ class MapEngineEx extends MapEngine
 					let actor = this.teleportData.actor;
 					actor.x = this.teleportData.toX;
 					actor.y = this.teleportData.toY;
-					this.blockInput = false;
 					this.teleportData = null;
 				}
-				await this.fader.fadeTo(Color.Transparent, 60);
-			},
-			onExit: async () => {
-				await this.fader.fadeTo(Color.Black, 60);
+				if (this.needFadeIn) {
+					this.needFadeIn = false;
+					await this.fader.fadeTo(Color.Transparent, 60);
+				}
+				this.blockInput = false;
 			},
 		});
 	}
@@ -117,8 +125,10 @@ class MapEngineEx extends MapEngine
 		this.MEngine.addTrigger(Random.string(), x, y, 0,
 			async (runTime, actor) => {
 				this.teleportData = { actor, toX, toY };
+				this.needFadeIn = true;
 				this.blockInput = true;
-				await this.changeMap(mapFileName);
+				await this.fader.fadeTo(Color.Black, 60);
+				this.changeMap(mapFileName);
 			});
 	}
 }
