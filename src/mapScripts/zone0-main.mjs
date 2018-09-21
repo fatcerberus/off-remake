@@ -57,7 +57,27 @@ export const entityScripts =
 	pablo: {
 		async onTalk(runTime, self, actor)
 		{
+			let purring = new Sample('sounds/catPurr.wav');
+			runTime.maps.blockInput = true;
 			self.faceEntity(actor);
+			await new Scene()
+				.call(() => purring.play(Mixer.Default))
+				.talk("Judge", true, 1.0, Infinity, `Allow me to inform you that I find you quite tangible for a phantasmagorial being. Might you, in fact, be a person of flesh and blood?`)
+				.talk("Batter", true, 1.0, Infinity, `I think so.`)
+				.call(() => purring.play(Mixer.Default))
+				.talk("Judge", true, 1.0, Infinity, `Then I was mistaken from the beginning, and you did not even interrupt me in my fanciful phantasms...`)
+				.pause(30)
+				.talk("Judge", true, 1.0, Infinity,
+					`This is relatively bizarre, I must say, for you are the first living being I was given to encounter in this place. I had, incidentally, concluded that zone 0 was an empty land. It is all too obvious that I was led astray.`,
+					`However, there exist other zones, and in those territories, hostile individuals might attack you most violently. Your sacred mission will likely lead you into these lands. Would you like me to acquaint you with the art of violent confrontation?`)
+				.pause(60)
+				.talk("Batter", true, 1.0, Infinity, `(This is the part where I whale on a cat for a few minutes using a baseball bat. The cat is surprisingly durable.)`)
+				.pause(60)
+				.talk("Judge", true, 1.0, Infinity, `From now on, you will be ready to dispose of all impure obstacles that dare appear in your luminous mission's way.`)
+				.pause(30)
+				.talk("Judge", true, 1.0, Infinity, `...well, supposing your intelligence is on the same level with your undeniable capability of dealing bat blows to an innocent cat. Be it as it may, your training has not reached its end yet. Let me ask you to follow me, if you still want me as your guide.`)
+				.run();
+			runTime.maps.blockInput = false;
 		},
 	},
 };
