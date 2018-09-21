@@ -47,6 +47,9 @@ export const mapScripts =
 				.move(pablo, 'west', 8)
 				.move(pablo, 'north', 1)
 				.run();
+			pablo.x = 152;
+			pablo.y = 632;
+			pablo.queueMove('west', 1, 3);
 			runTime.maps.blockInput = false;
 		}
 	},
@@ -57,6 +60,7 @@ export const entityScripts =
 	pablo: {
 		async onTalk(runTime, self, actor)
 		{
+			let pablo = runTime.maps.getEntity('pablo');
 			let purring = new Sample('sounds/catPurr.wav');
 			runTime.maps.blockInput = true;
 			self.faceEntity(actor);
@@ -73,10 +77,14 @@ export const entityScripts =
 				.pause(60)
 				.talk("Batter", true, 1.0, Infinity, `(This is the part where I whale on a cat for a few minutes using a baseball bat. The cat is surprisingly durable.)`)
 				.pause(60)
+				.call(() => purring.play(Mixer.Default))
 				.talk("Judge", true, 1.0, Infinity, `From now on, you will be ready to dispose of all impure obstacles that dare appear in your luminous mission's way.`)
 				.pause(30)
 				.talk("Judge", true, 1.0, Infinity, `...well, supposing your intelligence is on the same level with your undeniable capability of dealing bat blows to an innocent cat. Be it as it may, your training has not reached its end yet. Let me ask you to follow me, if you still want me as your guide.`)
 				.run();
+			pablo.x = 152;
+			pablo.y = 424;
+			pablo.queueMove('south', 1, 3);
 			runTime.maps.blockInput = false;
 		},
 	},
