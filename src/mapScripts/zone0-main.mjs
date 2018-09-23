@@ -9,6 +9,8 @@ export const mapScripts =
 {
 	async onEnter(runTime, map)
 	{
+		runTime.maps.addTeleport('maps/zone0-house-3f.mem', 5, 27, 88, 136);
+
 		Music.play('@/music/emptyWarehouse-out.ogg');
 
 		if (!runTime.flags.metTheJudge) {
@@ -84,7 +86,7 @@ export const entityScripts =
 				.run();
 			pablo.x = 152;
 			pablo.y = 424;
-			pablo.queueMove('south', 1, 3);
+			pablo.destroy();
 			runTime.maps.blockInput = false;
 		},
 	},
