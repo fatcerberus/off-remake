@@ -9,7 +9,7 @@ export const mapScripts =
 {
 	async onEnter(runTime, map)
 	{
-		runTime.maps.addTeleport('maps/zone0-house-3f.mem', 5, 27, 88, 136);
+		runTime.maps.addTeleport('maps/zone0-house-3f.mem', 5, 27, 56, 136);
 
 		Music.play('@/music/emptyWarehouse-out.ogg');
 
@@ -59,7 +59,8 @@ export const mapScripts =
 
 export const entityScripts =
 {
-	pablo: {
+	pablo:
+	{
 		async onTalk(runTime, self, actor)
 		{
 			let pablo = runTime.maps.getEntity('pablo');

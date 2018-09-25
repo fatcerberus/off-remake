@@ -3,7 +3,7 @@
  *  based on the game "OFF" by Mortis Ghost  (c) 2008
 **/
 
-import { Prim, Random, Scene } from 'sphere-runtime';
+import { Console, Prim, Random, Scene } from 'sphere-runtime';
 
 import MapEngine from 'map-engine';
 
@@ -12,6 +12,18 @@ import SpriteImage from '$/spriteImage';
 import { TitleScreen } from '$/menuSystem';
 
 import '$/defineScenelets';
+
+global.console = new Console();
+console.defineObject('talk', null, {
+	'off'() {
+		Sphere.Game.disableTalking = true;
+		console.log("the talking switch is now OFF");
+	},
+	'on'() {
+		Sphere.Game.disableTalking = false;
+		console.log("the talking switch is now ON");
+	},
+});
 
 export default
 class OFFSession
