@@ -14,14 +14,14 @@ import { TitleScreen } from '$/menuSystem';
 import '$/defineScenelets';
 
 global.console = new Console();
-console.defineObject('talk', null, {
+console.defineObject('yap', null, {
 	'off'() {
 		Sphere.Game.disableTalking = true;
-		console.log("the talking switch is now OFF");
+		console.log("the yappy talking switch is now OFF");
 	},
 	'on'() {
 		Sphere.Game.disableTalking = false;
-		console.log("the talking switch is now ON");
+		console.log("the yappy talking switch is now ON");
 	},
 });
 
