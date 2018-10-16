@@ -1,7 +1,7 @@
 /*
  *  OFF: Puppetmaster by Fat Cerberus
  *  (c) 2018, based on OFF by Mortis Ghost (c) 2008
- *  Cellscript.mjs
+ *  Cellscript
  */
 
 import { convertRSS } from '$/build/rssLoader';
@@ -10,16 +10,15 @@ import { convertRMP } from '$/build/rmpLoader';
 const rssTool = new Tool(convertRSS, "compiling spriteset");
 const rmpTool = new Tool(convertRMP, "compiling map");
 
-Object.assign(Sphere.Game,
-{
+Object.assign(Sphere.Game, {
 	name: "OFF: Puppetmaster",
 	author: "Fat Cerberus",
 	summary: "The Batter has an important mission. Be sure it's accomplished.",
 	resolution: '320x240',
-	main: '@/scripts/main.mjs',
 
 	// minimum Sphere v2 API level 1
 	version: 2, apiLevel: 1,
+	main: '@/scripts/main.mjs',
 });
 
 runTool('@/sprites', files('sprites/*.rss'), rssTool, '.ses');
