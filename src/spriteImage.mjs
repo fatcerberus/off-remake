@@ -36,12 +36,9 @@ class SpriteImage extends Thread
 
 	set pose(name)
 	{
-		let newPoseID = from(this.set.directions)
-			.where(it => it.name === name)
-			.select((it, idx) => idx)
-			.first();
-		if (newPoseID === undefined)
-			throw new ReferenceError(`No such pose '${name}' in spriteset`);
+		const newPoseID = from(this.set.directions).findIndex(it => it.name === name);
+		if (newPoseID === -1)
+			throw new ReferenceError(`Spriteset pose not found '${name}'`);
 		this.poseID = newPoseID;
 		this.frameID = 0;
 		this.countdown = this.set.directions[this.poseID].frames[this.frameID].delay;

@@ -42,8 +42,8 @@ class OFFSession
 
 	async start()
 	{
-		//await this.titles.run();
-		//await playOpening();
+		await this.titles.run();
+		await playOpening();
 
 		this.theBatter = this.maps.createCharacter('theBatter', '@/sprites/theBatter.ses', 152, 168, 0);
 		for (let i = 0; i < 4; ++i)
@@ -56,7 +56,7 @@ class OFFSession
 async function playOpening()
 {
 	let backColor = Color.of('#00101010');
-	let sprite = new SpriteImage('@/sprites/batter.rss');
+	let sprite = new SpriteImage('@/sprites/theBatter.rss');
 	sprite.pose = 'south';
 	sprite.x = Surface.Screen.width / 2;
 	sprite.y = Surface.Screen.height / 2;
@@ -111,7 +111,7 @@ class MapEngineEx extends MapEngine
 		super(...args);
 
 		this.blockInput = true;
-		this.fader = new AutoColorMask(Color.Black);
+		this.fader = new AutoColorMask(Color.Transparent);
 		this.mapScriptsPath = '@/scripts/mapScripts';
 		this.teleportData = null;
 		this.needFadeIn = true;
