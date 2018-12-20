@@ -3,7 +3,7 @@
  *  based on OFF by Mortis Ghost  (c) 2008
  */
 
-import { Prim, Scene, Thread } from 'sphere-runtime';
+import { Easing, Prim, Thread, Tween } from 'sphere-runtime';
 
 export default
 class AutoColorMask extends Thread
@@ -11,10 +11,8 @@ class AutoColorMask extends Thread
 	constructor(initialMask = Color.Transparent)
 	{
 		super({ priority: Infinity });
-
 		this.mask = initialMask;
-		this.scene = null;
-
+		this.tween = new Tween(this, Easing.Linear);
 		this.start();
 	}
 
@@ -27,11 +25,6 @@ class AutoColorMask extends Thread
 	{
 		if (!(newMask instanceof Color))
 			throw new TypeError(`'newMask' must be a Color object`);
-
-		if (this.scene !== null)
-			this.scene.stop();
-		this.scene = new Scene()
-			.tween(this.mask, numFrames, 'linear', newMask);
-		await this.scene.run();
+		await this.tween.easeInOut(newMask, numFrames);
 	}
 }
