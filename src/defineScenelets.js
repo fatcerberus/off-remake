@@ -3,7 +3,7 @@
  *  based on the game "OFF" by Mortis Ghost  (c) 2008
 **/
 
-import { Joypad, Music, Prim, Scene } from 'sphere-runtime';
+import { Music, Prim, Scene } from 'sphere-runtime';
 
 Scene.defineOp('adjustBGM', {
 	async start(scene, volume, numFrames = 0) {
@@ -257,7 +257,7 @@ Scene.defineOp('talk', {
 	getInput(scene) {
 		if (this.mode !== "idle")
 			return;
-		if ((Keyboard.Default.isPressed(Key.Z) || Joypad.P1.isPressed(0))
+		if ((Keyboard.Default.isPressed(Key.Z) || Joystick.P1.isPressed(0))
 			&& this.timeout === Infinity)
 		{
 			if (this.topLine + 3 >= this.text[this.currentPage].length) {

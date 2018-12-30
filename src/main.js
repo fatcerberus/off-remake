@@ -31,7 +31,7 @@ class OFFSession
 	constructor()
 	{
 		this.flags = {
-			playerName: "Pigfood McCoy",
+			playerName: "Big Chungus",
 			playerSex: 'male',
 			metTheJudge: false,
 		};
@@ -42,12 +42,10 @@ class OFFSession
 
 	async start()
 	{
-		await this.titles.run();
-		await playOpening();
+		//await this.titles.run();
+		//await playOpening();
 
 		this.theBatter = this.maps.createCharacter('theBatter', '@/sprites/theBatter.ses', 152, 168, 0);
-		for (let i = 0; i < 4; ++i)
-			this.theBatter._sprite.dirs[i].dt = 8;
 		this.maps.attachInput(this.theBatter);
 		await this.maps.start('@/maps/zone0-lobby.mem', this.theBatter);
 	}
