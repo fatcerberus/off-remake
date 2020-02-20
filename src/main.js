@@ -42,8 +42,8 @@ class OFFSession
 
 	async start()
 	{
-		//await this.titles.run();
-		//await playOpening();
+		await this.titles.run();
+		await playOpening();
 
 		this.theBatter = this.maps.createCharacter('theBatter', '@/sprites/theBatter.ses', 152, 168, 0);
 		this.maps.attachInput(this.theBatter);
@@ -54,13 +54,17 @@ class OFFSession
 async function playOpening()
 {
 	let backColor = Color.of('#00101010');
-	let sprite = new SpriteImage('@/sprites/theBatter.rss');
+	let sprite = await SpriteImage.fromFile('@/sprites/theBatter.rss');
 	sprite.pose = 'south';
 	sprite.x = Surface.Screen.width / 2;
 	sprite.y = Surface.Screen.height / 2;
 	sprite.alpha = 0.0;
-	let job = Dispatch.onRender(() => {
+	const updateJob = Dispatch.onUpdate(() => {
+		sprite.update();
+	});
+	const renderJob = Dispatch.onRender(() => {
 		Prim.fill(Surface.Screen, backColor);
+		sprite.blit(sprite.x, sprite.y, sprite.alpha);
 	});
 	await new Scene()
 		.pause(300)
@@ -72,7 +76,6 @@ async function playOpening()
 		.pause(60)
 		.talk("", false, 0.5, Infinity,
 			"...oh, but we hardly have time for formalities, do we? Let's cut to the chase.")
-		.call(() => sprite.start())
 		.fork()
 			.tween(backColor, 60, 'linear', { a: 1.0 })
 		.end()
@@ -99,7 +102,8 @@ async function playOpening()
 		.adjustBGM(1.0)
 		.call(async () => await sprite.stop())
 		.run();
-	job.cancel();
+	renderJob.cancel();
+	updateJob.cancel();
 }
 
 class MapEngineEx extends MapEngine
