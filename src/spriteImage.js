@@ -11,7 +11,7 @@ class SpriteImage
 {
 	static async fromFile(fileName)
 	{
-		const fs = await DataStream.open(fileName, FileOp.Read);
+		const fs = await DataStream.fromFile(fileName, FileOp.Read);
 		const rss = fs.readStruct({
 			signature:   { type: 'fstring', length: 4 },
 			version:     { type: 'uint16le' },
