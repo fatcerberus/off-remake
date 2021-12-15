@@ -5,7 +5,7 @@
 
 import { Music, Prim, Scene } from 'sphere-runtime';
 
-import MenuStrip from './menuStrip';
+import MenuStrip from './menuStrip.js';
 
 export default
 class TitleScreen

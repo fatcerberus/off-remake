@@ -1,10 +1,7 @@
 [.ssproj]
 author=Fat Cerberus
-buildDir=dist/
 compiler=Cell
 description=A remake/remaster of the surreal horror game OFF, originally by Mortis Ghost, for Sphere.
 mainScript=main.js
 name=OFF: Puppetmaster
-screenHeight=240
-screenWidth=320
-
+resolution=320x240

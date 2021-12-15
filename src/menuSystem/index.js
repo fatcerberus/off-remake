@@ -3,5 +3,5 @@
  *  based on the game "OFF" by Mortis Ghost  (c) 2008
 **/
 
-export { default as MenuStrip } from './menuStrip';
-export { default as TitleScreen } from './titleScreen';
+export { default as MenuStrip } from './menuStrip.js';
+export { default as TitleScreen } from './titleScreen.js';

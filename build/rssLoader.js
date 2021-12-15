@@ -30,9 +30,8 @@
  * dealings in this Software without prior written authorization.
  */
 
-import {TileBuffer, MapBuffer} from "./PixelBuffer";
-
-import {DataStream} from "cell-runtime";
+import DataFileStream from "./DataFileStream.js";
+import {TileBuffer, MapBuffer} from "./PixelBuffer.js";
 
 export function convertRSS(outputFile, inputFile)
 {
@@ -42,7 +41,7 @@ export function convertRSS(outputFile, inputFile)
 
 export function loadRSS(filename)
 {
-    const inputFile = new DataStream(filename, FileOp.Read);
+    const inputFile = new DataFileStream(filename, FileOp.Read);
 
     const header = inputFile.readStruct(RSSHeader);
     inputFile.position = inputFile.position + 106;
@@ -137,7 +136,7 @@ export function loadRSS(filename)
 
 export function writeSprite (filename, data)
 {
-    const outputFile = new DataStream(filename, FileOp.Write);
+    const outputFile = new DataFileStream(filename, FileOp.Write);
 
     //dimensions
     outputFile.writeUint16(data.frameWidth, true);

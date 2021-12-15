@@ -4,20 +4,19 @@
  *  Cellscript.js
  */
 
-import { convertRSS } from '$/build/rssLoader';
-import { convertRMP } from '$/build/rmpLoader';
+import { convertRSS } from './build/rssLoader.js';
+import { convertRMP } from './build/rmpLoader.js';
 
 const rssTool = new Tool(convertRSS, "compiling spriteset");
 const rmpTool = new Tool(convertRMP, "compiling map");
 
-Object.assign(Sphere.Game, {
+describe({
+	version: 2,
+	apiLevel: 2,
 	name: "OFF: Puppetmaster",
 	author: "Fat Cerberus",
 	summary: "The Batter has an important mission. Be sure it's accomplished.",
 	resolution: '320x240',
-
-	// minimum Sphere v2 API level 2
-	version: 2, apiLevel: 2,
 	main: '@/scripts/main.js',
 });
 

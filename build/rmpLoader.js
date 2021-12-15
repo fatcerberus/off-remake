@@ -30,7 +30,7 @@
  * dealings in this Software without prior written authorization.
  */
 
-import {DataStream} from "cell-runtime";
+import DataFileStream from "./DataFileStream.js";
 
 export function convertRMP(output, input)
 {
@@ -39,7 +39,7 @@ export function convertRMP(output, input)
 
 function writeMEM(data, fileName)
 {
-    const outputFile = new DataStream(fileName, FileOp.Write);
+    const outputFile = new DataFileStream(fileName, FileOp.Write);
     //lead out with the tile data
     outputFile.writeUint16(data.numTiles, true);
     outputFile.writeUint16(data.tileWidth, true);
@@ -129,7 +129,7 @@ function writeMEM(data, fileName)
 
 function loadRMP(fileName)
 {
-    let inputFile = new DataStream(fileName, FileOp.Read);
+    let inputFile = new DataFileStream(fileName, FileOp.Read);
 
     if (inputFile.readStringRaw(4) !== ".rmp")
     {
@@ -270,7 +270,7 @@ function loadRMP(fileName)
     if (tilesetFile.length > 0)
     {
         const splitPoint = fileName.lastIndexOf("/")+1;
-        inputFile = new DataStream(fileName.slice(0, splitPoint) + tilesetFile, FileOp.Read);
+        inputFile = new DataFileStream(fileName.slice(0, splitPoint) + tilesetFile, FileOp.Read);
     }
 
     if (inputFile.readStringRaw(4) !== ".rts")

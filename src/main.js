@@ -7,11 +7,11 @@ import { Console, Prim, Random, Scene } from 'sphere-runtime';
 
 import MapEngine from 'map-engine';
 
-import AutoColorMask from '$/autoColorMask';
-import SpriteImage from '$/spriteImage';
-import { TitleScreen } from '$/menuSystem';
+import AutoColorMask from './autoColorMask.js';
+import SpriteImage from './spriteImage.js';
+import { TitleScreen } from './menuSystem/index.js';
 
-import '$/defineScenelets';
+import './defineScenelets.js';
 
 global.console = new Console();
 console.defineObject('yap', null, {
