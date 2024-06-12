@@ -22,7 +22,7 @@ export const entityScripts =
 	{
 		async onTalk(runTime, self, actor)
 		{
-			let purring = new Sample('sounds/catPurr.wav');
+			const purring = await Sample.fromFile('@/sounds/catPurr.wav');
 			self.faceEntity(actor);
 			await new Scene()
 				.call(() => purring.play(Mixer.Default))

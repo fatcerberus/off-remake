@@ -5,15 +5,13 @@
 
 import { Console, Prim, Random, Scene } from 'sphere-runtime';
 
-import MapEngine from 'map-engine';
-
 import AutoColorMask from './autoColorMask.js';
 import SpriteImage from './spriteImage.js';
 import { TitleScreen } from './menuSystem/index.js';
 
 import './defineScenelets.js';
 
-global.console = new Console();
+globalThis.console = new Console();
 console.defineObject('yap', null, {
 	'off'() {
 		Sphere.Game.disableTalking = true;
@@ -36,7 +34,6 @@ class OFFSession
 			metTheJudge: false,
 		};
 
-		this.maps = new MapEngineEx(this);
 		this.titles = new TitleScreen();
 	}
 
@@ -44,10 +41,6 @@ class OFFSession
 	{
 		await this.titles.run();
 		await playOpening();
-
-		this.theBatter = this.maps.createCharacter('theBatter', '@/sprites/theBatter.ses', 152, 168, 0);
-		this.maps.attachInput(this.theBatter);
-		await this.maps.start('@/maps/zone0-lobby.mem', this.theBatter);
 	}
 }
 
@@ -104,49 +97,4 @@ async function playOpening()
 		.run();
 	renderJob.cancel();
 	updateJob.cancel();
-}
-
-class MapEngineEx extends MapEngine
-{
-	constructor(...args)
-	{
-		super(...args);
-
-		this.blockInput = true;
-		this.fader = new AutoColorMask(Color.Transparent);
-		this.mapScriptsPath = '@/scripts/mapScripts';
-		this.teleportData = null;
-		this.needFadeIn = true;
-
-		Object.assign(this.MEngine, {
-			onEnter: async () => {
-				if (this.teleportData !== null) {
-					let actor = this.teleportData.actor;
-					actor.x = this.teleportData.toX;
-					actor.y = this.teleportData.toY;
-					this.teleportData = null;
-				}
-				if (this.needFadeIn) {
-					this.needFadeIn = false;
-					await this.fader.fadeTo(Color.Transparent, 60);
-				}
-			},
-		});
-	}
-
-	addTeleport(mapFileName, x, y, toX, toY)
-	{
-		let firing = false;
-		this.MEngine.addTrigger(Random.string(), x, y, 0,
-			async (runTime, actor) => {
-				if (firing)
-					return;
-				firing = true;
-				this.teleportData = { actor, toX, toY };
-				this.needFadeIn = true;
-				await this.fader.fadeTo(Color.Black, 60);
-				this.changeMap(mapFileName);
-				firing = false;
-			});
-	}
 }

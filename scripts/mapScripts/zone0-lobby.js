@@ -9,7 +9,7 @@ export const mapScripts =
 {
 	async onEnter(runTime, map)
 	{
-		runTime.maps.addTeleport('maps/zone0-main.mem', 9, 0, 160, 944);
+		runTime.maps.addTeleport('@/maps/zone0-main.mem', 9, 0, 160, 944);
 		runTime.theBatter.frozen = true;
 		/*await new Scene()
 			.talk("Batter", true, 1.0, Infinity,

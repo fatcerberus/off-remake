@@ -1,11 +1,7 @@
-[.ssproj]
-apiLevel=4
-apiVersion=2
-author=Fat Cerberus
-compiler=Sphere Classic
-description=A remake/remaster of the surreal horror game OFF, originally by Mortis Ghost, for Sphere.
-mainScript=scripts/main.js
-manageGameJson=False
+version=2
+api=4
 name=OFF: Puppetmaster
+author=Fat Cerberus
+description=A remake/remaster of the surreal horror game OFF, originally by Mortis Ghost, for Sphere.
 resolution=320x240
-saveID=
+main=scripts/main.js

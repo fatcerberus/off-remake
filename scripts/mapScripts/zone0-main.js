@@ -9,7 +9,7 @@ export const mapScripts =
 {
 	async onEnter(runTime, map)
 	{
-		runTime.maps.addTeleport('maps/zone0-house-3f.mem', 5, 27, 56, 136);
+		runTime.maps.addTeleport('@/maps/zone0-house-3f.mem', 5, 27, 56, 136);
 
 		Music.play('@/music/emptyWarehouse-out.ogg');
 
@@ -21,7 +21,7 @@ export const mapScripts =
 			let pronoun1 = runTime.flags.playerSex == 'male' ? 'he' : 'she';
 			let pronoun2 = runTime.flags.playerSex == 'male' ? 'He' : 'She';
 			let pronoun3 = runTime.flags.playerSex == 'male' ? 'His' : 'Her';
-			let purring = new Sample('sounds/catPurr.wav');
+			let purring = new Sample('@/sounds/catPurr.wav');
 			await new Scene()
 				.move(pablo, 'east', 8)
 				.move(pablo, 'south', 6 * 16)
